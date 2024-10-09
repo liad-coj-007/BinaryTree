@@ -39,6 +39,10 @@ public:
         return findOnNode(root,value);
     }
 
+    void erase(const T& value){
+        root = eraseData(root,value);
+    }
+
 
     /**
      * @brief do desructor
@@ -105,6 +109,63 @@ private:
         if (!node) return false;
         if (node->value == value) return true;
         return value < node->value ? findOnNode(node->left, value) : findOnNode(node->right, value);
+    }
+
+    /**
+     * @brief return the node without the value
+     * @param node - the node we change
+     * @param value - the value we want to delete
+     */
+    Node* eraseData(Node *&node,const T &value){
+        if(node == nullptr){
+            return node;
+        }
+
+        if(node->value == value){
+             return eraseNode(node);
+        }
+
+        if(value < node->value){
+            node->left =  eraseData(node->left,value);
+        }else{
+            node->right = eraseData(node->right,value);
+        }
+
+        return node;
+    }
+
+    /**
+     * @brief erase the node from the data
+     * @param node - the node we delete
+     * @return a newnode of the data
+     * the node has
+     */
+    Node* eraseNode(Node* &node){
+        Node* newnode = node->right;
+        Node* minnode = min(newnode);
+        if(minnode == nullptr){
+            newnode = node->left;
+        }else{
+            minnode->left = node->left;
+        }
+        node->right = nullptr;
+        node->left = nullptr;
+        DeleteNode(node);
+        return newnode;
+    }
+
+
+   
+
+    /**
+     * @brief return the min node
+     * @param node - the node we search the minimyne
+     */
+    Node* min(Node*& node){
+        if(node == nullptr || node->left == nullptr){
+            return node;
+        }
+        return min(node->left);
     }
 
     /**
