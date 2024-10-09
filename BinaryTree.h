@@ -19,6 +19,11 @@ public:
         insertToNode(root, value);
     }
 
+    /**
+     * @brief adding insert values
+     * @param value - the value we add
+     * @param args - the other vals we add 
+     */
     template<class ...Args>
     void insert(const T& value,Args... args){
         insert(value);
@@ -52,10 +57,17 @@ private:
     };
 
     template<class ...Args>
+    /**
+     * @brief insert none args
+     */
     void insert(){
         //nothing happend
     }
 
+    /**
+     * @brief free  node data 
+     * @param node the node we free
+    */
     void DeleteNode(Node*& node){
         if(node == nullptr){
             return;
@@ -83,12 +95,23 @@ private:
         return os;
     }
 
+    /**
+     * @brief return true if the value
+     * is in the node
+     * @param node - the node we search on
+     * @param value - the value we take
+     */
     bool findOnNode(Node* node, const T &value) const {
         if (!node) return false;
         if (node->value == value) return true;
         return value < node->value ? findOnNode(node->left, value) : findOnNode(node->right, value);
     }
 
+    /**
+     * @brief print the as a tree nodes values
+     * @param level - the level of the tree
+     * @param os - the os we use
+     */
     void printAsTree(Node* node, int level, ostream &os) const {
         if (node == nullptr) return;
 
