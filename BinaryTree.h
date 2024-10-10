@@ -13,7 +13,7 @@ public:
 
     /**
      * @brief cpy the tree object
-     * @param tree - the tree we delete
+     * @param other - the tree we delete
      */
     BinaryTree(const BinaryTree &other){
         Copy(root,other.root);
@@ -21,7 +21,7 @@ public:
 
     /**
      * @brief do assignment operator to tree
-     * @param tree - the tree we cpy
+     * @param other - the tree we cpy
      */
     BinaryTree<T>& operator=(const BinaryTree &other){
         if(this == &other){
@@ -35,12 +35,17 @@ public:
 
     /**
      * @brief build move semantics constractor
-     * @param tree - the tree we cpy
+     * @param other - the tree we cpy
      */
     BinaryTree( BinaryTree &&other){
         root = other.root;
     }
-
+    
+    /**
+     * @brief do movesemantic operator
+     * @param other - the tree we cpy
+     * @return binarytree&
+     */
     BinaryTree& operator=(BinaryTree &&other){
         if(this == &other){
             return *this;
@@ -95,10 +100,17 @@ public:
         DeleteNode(root);
     }
 
+    /**
+     * @brief return the tree data 
+     * as a vector
+     */
+    vector<T> getTreeByVector()const{
+        vector<T> treevec;
+        AppendToVector(root,treevec);
+        return treevec;
+    }
+
 private:
-
-  
-
     struct Node {
         T value;
         Node* left;
@@ -106,6 +118,21 @@ private:
 
         Node(const T &value) : value(value), left(nullptr), right(nullptr) {}
     };
+
+    /**
+     * @brief append the values to the vector by order
+     * @param node - the node we append the data
+     * @param vector - the vector we append to him the data
+     */
+    void AppendToVector(const Node* node,vector<T> &vector)const {
+        if(!node){
+            return;
+        }
+
+        AppendToVector(node->left,vector);
+        vector.push_back(node->value);
+        AppendToVector(node->right,vector);
+    }
 
     /**
      * @brief copy the node src
