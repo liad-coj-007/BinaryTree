@@ -12,6 +12,47 @@ public:
     BinaryTree() : root(nullptr) {}
 
     /**
+     * @brief cpy the tree object
+     * @param tree - the tree we delete
+     */
+    BinaryTree(const BinaryTree &other){
+        Copy(root,other.root);
+    }
+
+    /**
+     * @brief do assignment operator to tree
+     * @param tree - the tree we cpy
+     */
+    BinaryTree<T>& operator=(const BinaryTree &other){
+        if(this == &other){
+            return *this;
+        }
+
+        DeleteNode(root);
+        Copy(root,other.root);
+        return *this;
+    }
+
+    /**
+     * @brief build move semantics constractor
+     * @param tree - the tree we cpy
+     */
+    BinaryTree( BinaryTree &&other){
+        root = other.root;
+    }
+
+    BinaryTree& operator=(BinaryTree &&other){
+        if(this == &other){
+            return *this;
+        }
+
+        DeleteNode(root);
+        root = other.root;
+        other.root = nullptr;
+        return *this;
+    }
+
+    /**
      * @brief Insert the value into the tree
      * @param value - the value to insert
      */
@@ -39,10 +80,13 @@ public:
         return findOnNode(root,value);
     }
 
+    /**
+     * @brief erase the value
+     * @param value - the value we delete
+     */
     void erase(const T& value){
         root = eraseData(root,value);
     }
-
 
     /**
      * @brief do desructor
@@ -52,6 +96,9 @@ public:
     }
 
 private:
+
+  
+
     struct Node {
         T value;
         Node* left;
@@ -59,6 +106,23 @@ private:
 
         Node(const T &value) : value(value), left(nullptr), right(nullptr) {}
     };
+
+    /**
+     * @brief copy the node src
+     * to dest
+     * @param dest - the destiny node we put
+     * src data to
+     * @param src - the source node the data
+     * we put 
+     */
+    void Copy(Node*& dest, const Node* src){
+        if(src == nullptr){
+            return;
+        }
+        dest = new Node(src->value);
+        Copy(dest->right,src->right);
+        Copy(dest->left,src->left);
+    }
 
     template<class ...Args>
     /**
@@ -153,9 +217,6 @@ private:
         DeleteNode(node);
         return newnode;
     }
-
-
-   
 
     /**
      * @brief return the min node
