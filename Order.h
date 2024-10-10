@@ -23,18 +23,4 @@ namespace Order
         vector<T> treevector = tree.getTreeByVector();
         copy(treevector.begin(),treevector.end(),begin);
     }
-
-    template<class T>
-    static void Order(T* arr,const int n){
-        BinaryTree<T> treearr;
-        for(int i = 0; i < n; i++){
-            treearr.insert(arr[i]);
-        }
-
-        vector<T> vec = treearr.getTreeByVector();
-        for(int i = 0; i < n; i++){
-            arr[i] = vec[i];
-        }
-    }
-    
 };
