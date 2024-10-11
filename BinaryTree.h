@@ -39,6 +39,7 @@ public:
      */
     BinaryTree( BinaryTree &&other){
         root = other.root;
+        other.root = nullptr;
     }
     
     /**
